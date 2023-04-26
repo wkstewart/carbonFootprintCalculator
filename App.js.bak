@@ -1,0 +1,211 @@
+import 'react-native-gesture-handler';
+import React, {useState} from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Image, Switch, Pressable } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const transportation = require('./images/transportation.png');
+const diet = require('./images/diet.png');
+const waste = require('./images/waste.png');
+const energy = require('./images/energy.png');
+
+const Stack = createStackNavigator();
+
+
+function MyStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Notifications" component={Notifications} />
+      <Stack.Screen name="Calculate" component={Profile} />
+      <Stack.Screen name="Settings" component={Settings} />
+    </Stack.Navigator>
+  );
+}
+function CalculateScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button
+        title="Go to Notifications"
+        onPress={() => navigation.navigate('Notifications')}
+      />
+      <Button title="Go back" onPress={() => navigation.goBack()} />
+    </View>
+  );
+}
+
+export default function App() {
+  const [transportationIsEnabled, setTransportationIsEnabled] = useState(true);
+  const [wasteIsEnabled, setWasteIsEnabled] = useState(true);
+  const [dietIsEnabled, setDietIsEnabled] = useState(true);
+  const [energyIsEnabled, setEnergyIsEnabled] = useState(true);
+  const toggleTransportation = () => setTransportationIsEnabled(previousState => !previousState);
+  const toggleWaste = () => setWasteIsEnabled(previousState => !previousState);
+  const toggleDiet = () => setDietIsEnabled(previousState => !previousState);
+  const toggleEnergy = () => setEnergyIsEnabled(previousState => !previousState);
+
+  return (
+    <>
+    <View style={styles.outerContainer}>
+      <View>
+        <Text style={styles.title}>XXXGreen Impact Home</Text>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.pressableContainer}>
+          <Pressable style={styles.button}>
+            <View style={{borderWidth: 0, borderColor: "red"}}>
+              <Image source={transportation} style={styles.images} />
+            </View>
+            <View style={{ flexDirection: "row"}}>
+              <View style={{ backgroundColor: "lightblue", alignItems: "flex-end", paddingRight: 10, width: 148, borderWidth: 0, borderColor: "orange"}}>
+                <Text style={styles.imageLabel}>Transportation</Text>
+              </View>
+              <View style={{ borderWidth: 0, borderColor: "orange"}}>
+                <Switch
+                  trackColor={{false: '#767577', true: '#81b0ff'}}
+                  thumbColor={transportationIsEnabled ? '#f5dd4b' : '#f4f3f4'}
+                  onValueChange={toggleTransportation}
+                  value={transportationIsEnabled}
+                  style={styles.switch}
+                />
+              </View>
+            </View>
+          </Pressable>
+          <Pressable style={styles.button}>
+            <View style={{ borderWidth: 0}}>
+              <Image source={waste} style={styles.images} />
+            </View>
+            <View style={{ borderWidth: 0}}>
+              <View style={{ backgroundColor: "lightblue", paddingRight: 10, width: 148, borderWidth: 0, borderColor: "orange"}}>
+                <Text style={styles.imageLabel}>Waste</Text>
+              </View>
+              <View style={{ borderWidth: 0, borderColor: "orange"}}>
+                <Switch
+                  trackColor={{false: '#767577', true: '#81b0ff'}}
+                  thumbColor={wasteIsEnabled ? '#f5dd4b' : '#f4f3f4'}
+                  onValueChange={toggleWaste}
+                  value={wasteIsEnabled}
+                  style={styles.switch}
+                />
+              </View>
+            </View>
+          </Pressable>
+        </View>
+      </View>
+      <View style={styles.container}>
+        <View style={styles.pressableContainer}>
+          <Pressable style={styles.button}>
+            <View style={{ alignItems: "flex-start"}}>
+              <Image source={diet} style={styles.images} />
+            </View>
+            <View style={{ flexDirection: "row"}}>
+              <View style={{ backgroundColor: "lightblue", paddingRight: 10, width: 148, borderWidth: 0, borderColor: "blue"}}>
+                <Text style={styles.imageLabel}>Diet</Text>
+              </View>
+              <View style={{ borderWidth: 0, borderColor: "orange"}}>
+                <Switch
+                  trackColor={{false: '#767577', true: '#81b0ff'}}
+                  thumbColor={dietIsEnabled ? '#f5dd4b' : '#f4f3f4'}
+                  onValueChange={toggleDiet}
+                  value={dietIsEnabled}
+                  style={styles.switch}
+                />
+              </View>
+            </View>
+          </Pressable>
+          <Pressable style={styles.button}>
+            <View style={{ flexDirection: "row", alignItems: "flex-start"}}>
+              <Image source={energy} style={styles.images} />
+            </View>
+            <View style={{ flexDirection: "row"}}>
+              <View style={{ backgroundColor: "lightblue", alignItems: "flex-end", paddingRight: 10, width: 148, borderWidth: 0, borderColor: "orange"}}>
+                <Text style={styles.imageLabel}>Energy</Text>
+              </View>
+              <View style={{ borderWidth: 0, borderColor: "orange"}}>
+                <Switch
+                  trackColor={{false: '#767577', true: '#81b0ff'}}
+                  thumbColor={energyIsEnabled ? '#f5dd4b' : '#f4f3f4'}
+                  onValueChange={toggleEnergy}
+                  value={energyIsEnabled}
+                  style={styles.switch}
+                />
+              </View>
+            </View>
+          </Pressable>
+        </View>
+      </View>
+      <View style={{flexDirection: "row", width: "100%", justifyContent: "center", alignItems: "center"}}>
+        <Pressable onPress={() => { navigation.navigate('Compute') }} style={{borderWidth: 0}}>
+          <View style={{ backgroundColor: "lightblue", alignItems: "center", paddingRight: 10, height: 40, width: 148, borderWidth: 0, borderColor: "orange", justifyContent: "center"}}>
+            <Text style={{fontSize: 24, fontWeight: "bold", borderWidth: 0}}>Next</Text>
+          </View>
+        </Pressable>
+      </View>
+    </View>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  outerContainer: {
+    borderWidth: 0,
+    width: "100%",
+    borderColor: "black",
+    flexDirection: "column",
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container: {
+    borderWidth: 0,
+    borderColor: "black",
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressableContainer: {
+    borderWidth: 0,
+    borderColor: "yellow",
+    marginTop: 8,
+    marginBottom: 8,
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingBottom: 25,
+  },
+  separator: {
+    marginVertical: 10,
+    width: '80%',
+  },
+  button: {
+    height: 130,
+    width: 200,
+    backgroundColor: "lightblue",
+    borderRadius: 24,
+    borderWidth: 0,
+    alignItems: "center",
+    marginRight: 20,
+    marginLeft: 20,
+  },
+  switch: {
+    borderWidth: 1,
+    borderColor: "green",
+    backgroundColor: "lightblue",
+  },
+  images: {
+    height: 60,
+    width: 60,
+    marginTop: 6,
+    borderWidth: 0,
+    borderColor: "red",
+    backgroundColor: "lightblue",
+  },
+  imageLabel: {
+    borderWidth: 1,
+    borderColor: "blue",
+    backgroundColor: "lightblue",
+  },
+});
